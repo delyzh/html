@@ -2,9 +2,18 @@ export default {
   template: `<form>
   <template v-for="(item, index) in formItems">
 
-    <label>{{item.name || item.prop}}
-      <input v-if="item.type === 'number'" type="number" v-model="formData[item.prop]" @change="(val) => inputChange(val, item)"/>
-      <input v-else  v-model="formData[item.prop]" @change="(val) => inputChange(val, item)"/>
+    <label v-if="item.type === 'number'">{{item.name || item.prop}}
+      <input type="number" v-model="formData[item.prop]" @change="(val) => inputChange(val, item)"/>
+    </label>
+    <div v-else-if="item.type === 'radio'">{{item.name || item.prop}}
+      <label v-for="(option, ind) in item.options" :key="ind" style=" margin-left:1rem;">
+        {{option.name}}
+        <input type="radio" :name="item.prop"  v-model="formData[item.prop]" :value="option.value" @change="(val) => inputChange(val, item)">
+      </label>
+    </div>
+    <button v-else-if="item.type === 'button'" @click="item.click">{{item.name || item.prop}}</button>
+    <label v-else>{{item.name || item.prop}}
+      <input v-model="formData[item.prop]" @change="(val) => inputChange(val, item)"/>
     </label>
     <br/>
   </template>
