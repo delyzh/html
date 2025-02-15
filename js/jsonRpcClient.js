@@ -5,7 +5,7 @@ class JsonRpcClient {
     this.port = port;
     this._doken = doken;
     this._serviceName = serviceName;
-    this._basePath = `http://${host}:${port}${basePath}`;
+    this._basePath = (host.startsWith('http') ? host : `http://${host}`) + `:${port}${basePath}`;
   }
 
   async call(method, params)  {

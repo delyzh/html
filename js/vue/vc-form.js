@@ -1,20 +1,27 @@
 export default {
-  template: `<form>
+  template: `<form class="vc-form">
   <template v-for="(item, index) in formItems">
 
-    <label v-if="item.type === 'number'">{{item.name || item.prop}}
+    <label v-if="item.type === 'number'"><span class="label-text">{{item.name || item.prop}}</span>
       <input type="number" v-model="formData[item.prop]" @change="(val) => inputChange(val, item)"/>
     </label>
-    <div v-else-if="item.type === 'radio'">{{item.name || item.prop}}
+    <div v-else-if="item.type === 'radio'" class="vc-form-radio"><span class="label-text">{{item.name || item.prop}}</span>
       <label v-for="(option, ind) in item.options" :key="ind" style=" margin-left:1rem;">
         {{option.name}}
         <input type="radio" :name="item.prop"  v-model="formData[item.prop]" :value="option.value" @change="(val) => inputChange(val, item)">
       </label>
     </div>
-    <button v-else-if="item.type === 'button'" @click="item.click">{{item.name || item.prop}}</button>
+    <label class="vc-form-radio" v-else-if="item.type === 'checkbox'">
+      <span class="label-text">{{item.name || item.prop}}</span>
+      <el-checkbox-group v-model="formData[item.prop]" @change="(val) => inputChange(val, item)">
+        <el-checkbox  v-for="(option, ind) in item.options" :key="ind" :label="option.value">{{option.name}}</el-checkbox>
+      </el-checkbox-group>
+    </label>
+    <button class="vc-form-radio" v-else-if="item.type === 'button'" @click="item.click"><span class="label-text">{{item.name || item.prop}}</span> </button>
     <label v-else>{{item.name || item.prop}}
       <input v-model="formData[item.prop]" @change="(val) => inputChange(val, item)"/>
     </label>
+    <div v-else-if="item.type === 'html'">{{item.value}}</div>
     <br/>
   </template>
 </form>`,
